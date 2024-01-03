@@ -9,6 +9,6 @@ Students are expected to:
 Student Info
 =========================
 
-* Student Name: USTH CS/DS/MATH Laziness 
-* Student ID: Not-Vietnamese
+* Student Name: Pham Duc Khiem 
+* Student ID: BA12-095
 
