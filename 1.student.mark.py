@@ -13,7 +13,7 @@ def inputStudentInfo(numStudent,item):
     if (numStudent==0):
         print("There are no student in the class. Please input number of student first!")
         return
-    for i in range(numStudent):
+    for _ in range(numStudent):
         id = input("Input student id: ")
         name = input("Input name: ")
         dob = input("Date of Birth: ")
@@ -89,16 +89,18 @@ def inputMark(students,courses):
                         elif optionStudent > len(students):
                             print("Invalid input, try again")
                         else:
-                            midterm = input("Input mark: ")
-                            final = input("Input mark: ")
-                            courses[optionCourse-1]['mark'] = {
+                            if 'marks' not in courses[optionCourse - 1]:
+                                courses[optionCourse - 1]['marks'] = []
+                            midterm = input("Input midterm mark: ")
+                            final = input("Input final mark: ")
+                            marks = {
                                 "studentId": students[optionStudent-1]['id'],
                                 "studentName": students[optionStudent-1]['name'],
                                 "midterm": midterm,
                                 "final": final,
-                                "total": 0.4*midterm+0.6*final
+                                "total": 0.4*float(midterm)+0.6*float(final)
                             }
-                    
+                            courses[optionCourse - 1]['marks'].append(marks)
                         
                     except:
                         print("Invalid input, try again!")
@@ -106,8 +108,24 @@ def inputMark(students,courses):
             print("Invalid input, try again!")
 
 def printMark(courses):
-    for i in len(courses[0]):
-        print(f"{i+1}. {courses[0]['studentName']} + {courses[0]['mark']['total']}")
+    while True:
+        try:
+            listCourses(courses)
+            optionCourse = int(input("Choose the courses (0 for exit): "))
+            if optionCourse == 0:
+                break
+            elif optionCourse > len(courses):
+                    print("Invalid input, try again")
+            else:
+                course = courses[optionCourse-1]
+                if 'marks' in course:
+                    print(f"Course: {course['id']} - {course['name']}:")
+                    for mark in course['marks']:
+                        print(f"    Student: {mark['studentName']} - Midterm: {mark['midterm']} - Final: {mark['final']} - Total: {mark['total']}")
+                else:
+                    print("No mark in this course yet.")
+        except:
+            print("Invalid input, try again!")
 
 def main():
     courses = []
@@ -122,32 +140,23 @@ def main():
     2. Input student information
     3. Input number of courses
     4. Input course information
-    5. seclect a course, input mark
-    6. list courses
-    7. list student
-    8. show student marks 
+    5. Seclect a course, input mark
+    6. List courses
+    7. List student
+    8. Show student marks 
     """)
         try:
-            option = int(input("your choice: "))                                                         # choose option from 0 -> n
+            option = int(input("your choice: "))                                                         
             if option == 0:
                 break
-
-            elif option == 1:                                                                            # Option 1
+            elif option == 1:                                                                          
                 numStudent = inputNumberOfStudent()
-                print(numStudent)
-
-            elif option == 2:                                                                            # Option 2                                                     
+            elif option == 2:                                                   
                 inputStudentInfo(numStudent,students)
-                for i in range(numStudent):
-                    print(students[i])
             elif option == 3:
                 numCourse = inputNumberOfCouse()
-
             elif option == 4:
                 inputCourseInfo(numCourse,courses)
-                for i in range(numStudent):
-                    print(courses[i])
-
             elif option == 5:
                 inputMark(students,courses)
             elif option == 6:
@@ -159,8 +168,7 @@ def main():
             else:
                 print("Invalid input. Please try again!")
         except:
-            print("Invalid input. Please try again!")
-            
+            print("Invalid input. Please try again!")            
 
 if __name__ == "__main__":
     main()
